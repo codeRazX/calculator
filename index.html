@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="index.js"></script>
+</head>
+<body>
+    
+    <div class="calculator">
+
+            <div class="calculator__input">
+                <input id="input-result" type="text" placeholder="0" readonly disabled>
+            </div>
+
+            <div id="calculator" class="calculator__grid">
+                <button class="calculator__function">%</button>
+                <button data-action="clear" class="calculator__function">C</button>
+                <button data-action="delete" class="calculator__function">←</button>
+                <button data-operation="divide" class="calculator__function">÷</button>
+                <button data-number="7" class="calculator__number">7</button>
+                <button data-number="8" class="calculator__number">8</button>
+                <button data-number="9" class="calculator__number">9</button>
+                <button data-operation="multiply" class="calculator__function">x</button>
+                <button data-number="4" class="calculator__number">4</button>
+                <button data-number="5" class="calculator__number">5</button>
+                <button data-number="6" class="calculator__number">6</button>
+                <button data-operation="subtract" class="calculator__function">-</button>
+                <button data-number="1" class="calculator__number">1</button>
+                <button data-number="2" class="calculator__number">2</button>
+                <button data-number="3" class="calculator__number">3</button>
+                <button data-operation="add" class="calculator__function">+</button>
+                <button data-number="0" class="calculator__number">0</button>
+                <button data-operation="." class="calculator__number">.</button>
+                <button data-operation="result" class="calculator__function">=</button>
+            </div>
+        </div>
+</body>
+</html>
