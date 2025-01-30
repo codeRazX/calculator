@@ -6,6 +6,8 @@ let currentNumber = 0;
 let currentOperation = null;
 let isNewInput = false;
 
+const MAX_LENGTH = 9;
+
 document.addEventListener("DOMContentLoaded", registerListener);
 
 function registerListener() {
@@ -16,41 +18,40 @@ const calculatorLogic = (e) => {
     const number = e.target.dataset.number;
     const operation = e.target.dataset.operation;
     const action = e.target.dataset.action;
-
-    if(display.value === "Good try"){
-        display.value = "";
-    }
-    // Si presionamos un número
+   
+    
     if (number) {
         if (isNewInput) {
-            display.value = '';  // Limpiar la pantalla si es un nuevo número
+            display.value = '';  
             isNewInput = false;
         }
-        display.value += number; // Agregar el número al display
+
+        if(number === "." && display.value.includes("."))return;
+        if(display.value.length < MAX_LENGTH) display.value += number; 
     }
 
-    // Si presionamos una operación
-    if (operation) {
-        handleOperation(operation);
-    }
+    if (operation) handleOperation(operation);
+    
 
-    // Si presionamos una acción (limpiar o borrar)
+   
     if (action) {
         if (action === "clear") {
             reset();
         } else if (action === "delete") {
-            display.value = display.value.slice(0, -1); // Borrar el último caracter
+            display.value = display.value.slice(0, -1); 
         }
     }
+
+    
 }
 
 const handleOperation = (operation) => {
     if (currentOperation && !isNewInput) {
-        currentNumber = parseFloat(display.value);  // Guardar el número actual
+        currentNumber = parseFloat(display.value); 
         calculate();
     }
 
-    previousNumber = parseFloat(display.value);  // Guardar el número anterior
+    previousNumber = parseFloat(display.value);  
     currentOperation = operation;
     isNewInput = true;
 }
@@ -69,18 +70,25 @@ const calculate = () => {
         case "divide":
             if (currentNumber === 0) {
                 display.value = "Good try"
-                reset();
+                previousNumber = 0;
+                currentNumber = 0;
+                currentOperation = null;
+                isNewInput = false;
                 return;
             }
             previousNumber /= currentNumber;
             break;
+
         default:
             return;
     }
     
+    if(previousNumber.toString().length > MAX_LENGTH){
+        previousNumber = parseFloat(previousNumber.toString().slice(0, MAX_LENGTH));
+    }
     display.value = previousNumber;
-    currentOperation = null;  // Resetear la operación después de calcular
-    currentNumber = 0;  // Resetear el número actual
+    currentOperation = null;  
+    currentNumber = 0;  
 }
 
 const reset = () => {
@@ -88,4 +96,5 @@ const reset = () => {
     currentNumber = 0;
     currentOperation = null;
     isNewInput = false;
+    display.value = "";
 }
