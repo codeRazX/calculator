@@ -34,6 +34,7 @@ body{
     background-color: #150141;
     padding: 1rem;
     border-radius: 10px;
+    box-shadow: 5px 5px #0b0022;
 }
 
 .calculator__input{
@@ -82,6 +83,7 @@ body{
 .calculator__grid button:nth-child(17){
     flex: 2;
 }
+
 .calculator__number{
     background-color: var(--colorNumbers);
 }

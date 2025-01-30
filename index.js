@@ -5,7 +5,6 @@ let previousNumber = 0;
 let currentNumber = 0;
 let currentOperation = null;
 let isNewInput = false;
-
 const MAX_LENGTH = 9;
 
 document.addEventListener("DOMContentLoaded", registerListener);
@@ -19,6 +18,7 @@ const calculatorLogic = (e) => {
     const operation = e.target.dataset.operation;
     const action = e.target.dataset.action;
    
+    if(display.value === "Good try") reset();
     
     if (number) {
         if (isNewInput) {
@@ -32,16 +32,7 @@ const calculatorLogic = (e) => {
 
     if (operation) handleOperation(operation);
     
-
-   
-    if (action) {
-        if (action === "clear") {
-            reset();
-        } else if (action === "delete") {
-            display.value = display.value.slice(0, -1); 
-        }
-    }
-
+    if (action) action === "clear"? reset() : display.value = display.value.slice(0, -1);
     
 }
 
@@ -70,12 +61,9 @@ const calculate = () => {
         case "divide":
             if (currentNumber === 0) {
                 display.value = "Good try"
-                previousNumber = 0;
-                currentNumber = 0;
-                currentOperation = null;
-                isNewInput = false;
                 return;
             }
+            
             previousNumber /= currentNumber;
             break;
 
