@@ -1,88 +1,101 @@
 const display = document.getElementById("input-result");
 const calculator = document.getElementById("calculator");
 
-let previousNumber = 0;
-let currentNumber = 0;
+let firstOperand = 0;
+let secondOperand = 0;
 let currentOperation = null;
-let isNewInput = false;
+let isNewNumber = false;
+let isFirstCalculation = true;
+
 const MAX_LENGTH = 9;
+const ERROR_MESSAGE = "Good try!";
 
 document.addEventListener("DOMContentLoaded", registerListener);
-
 function registerListener() {
     calculator.addEventListener("click", calculatorLogic);    
 }
 
+
 const calculatorLogic = (e) => {
-    const number = e.target.dataset.number;
-    const operation = e.target.dataset.operation;
-    const action = e.target.dataset.action;
-   
-    if(display.value === "Good try") reset();
+    const number = e.target.dataset?.number;
+    const operation = e.target.dataset?.operation;
+    const action = e.target.dataset?.action;
     
     if (number) {
-        if (isNewInput) {
+        display.value === ERROR_MESSAGE && reset();
+        isFirstCalculation = false;
+        if (isNewNumber) {
             display.value = '';  
-            isNewInput = false;
+            isNewNumber = false;
         }
-
+       
         if(number === "." && display.value.includes("."))return;
         if(display.value.length < MAX_LENGTH) display.value += number; 
     }
 
-    if (operation) handleOperation(operation);
+    if (operation && display.value !== ERROR_MESSAGE){
+        !isFirstCalculation && handleOperation(operation);       
+    } 
     
-    if (action) action === "clear"? reset() : display.value = display.value.slice(0, -1);
-    
+    if (action){
+
+        if(action === "clear") reset();
+        else if(action === "delete" && display.value.length > 0){
+           display.value =  display.value.slice(0, -1);
+           display.value.length <= 0 && reset();   
+        }
+    } 
 }
 
 const handleOperation = (operation) => {
-    if (currentOperation && !isNewInput) {
-        currentNumber = parseFloat(display.value); 
+   
+    if (currentOperation && !isNewNumber) {
+        secondOperand = parseFloat(display.value); 
         calculate();
     }
 
-    previousNumber = parseFloat(display.value);  
+    firstOperand = parseFloat(display.value);  
     currentOperation = operation;
-    isNewInput = true;
+    isNewNumber = true;
 }
 
 const calculate = () => {
     switch (currentOperation) {
         case "add":
-            previousNumber += currentNumber;
+            firstOperand += secondOperand;
             break;
         case "subtract":
-            previousNumber -= currentNumber;
+            firstOperand -= secondOperand;
             break;
         case "multiply":
-            previousNumber *= currentNumber;
+            firstOperand *= secondOperand;
             break;
         case "divide":
-            if (currentNumber === 0) {
-                display.value = "Good try"
+            if (secondOperand === 0) {
+                display.value = ERROR_MESSAGE;
                 return;
             }
             
-            previousNumber /= currentNumber;
+            firstOperand /= secondOperand;
             break;
 
         default:
             return;
     }
-    
-    if(previousNumber.toString().length > MAX_LENGTH){
-        previousNumber = parseFloat(previousNumber.toString().slice(0, MAX_LENGTH));
+    if(firstOperand.toString().includes(".")){
+        firstOperand= firstOperand.toString().split(".")[1].length > 2? firstOperand.toFixed(2) : firstOperand;
     }
-    display.value = previousNumber;
+   
+    display.value = firstOperand;
     currentOperation = null;  
-    currentNumber = 0;  
+    secondOperand = 0;  
 }
 
 const reset = () => {
-    previousNumber = 0;
-    currentNumber = 0;
+    firstOperand = 0;
+    secondOperand = 0;
     currentOperation = null;
-    isNewInput = false;
+    isNewNumber = false;
     display.value = "";
+    isFirstCalculation = true;
 }

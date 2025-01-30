@@ -70,6 +70,7 @@ body{
     height: calc(30rem / 4 - 0.5rem);
     border: .5px solid #100131;
     color: var(--whiteModifier); 
+    border-radius: 4px;
 }
 
 .calculator__grid button:last-child{
@@ -80,6 +81,7 @@ body{
         background-color: #00223d;
     }
 }
+
 .calculator__grid button:nth-child(17){
     flex: 2;
 }
